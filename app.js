@@ -42,27 +42,32 @@ app.get('/users/:id', (req, res)=>{
 app.post('/users', (req, res) => {
     const user = req.body;
     const {name, username, age, email} = user;
-    if (
-        name.match(/^[a-zA-Z]{3,}$/)
-        && username.match(/^[a-zA-Z]{3,}$/)
-        && age >= 0
-        && (email && email.match(mailRegex))
-    ) {
-        fs.readFile(dbPath, {encoding: 'utf-8'}, (err, data) => {
-            if (err) throw new Error()
-            const users = JSON.parse(data);
-            users.push(user)
-            fs.writeFile(dbPath, JSON.stringify(users), (err) => {
-                if (err) throw new Error();
-                res.status(201).json(user);
-            });
-        });
-    } else {
-        res.status(406).json(
-            {
-                message: "Name, username, age or email is not valid"
+    if (name.match(/^[a-zA-Z]{3,}$/)) {
+        if (username.match(/^[a-zA-Z]{3,}$/)) {
+            if(age >= 0) {
+                if(email && email.match(mailRegex)) {
+                    fs.readFile(dbPath, {encoding: 'utf-8'}, (err, data) => {
+                        if (err) throw new Error();
+                        const users = JSON.parse(data);
+                        const lastId = users[users.length-1].id;
+                        user.id = lastId + 1;
+                        users.push(user)
+                        fs.writeFile(dbPath, JSON.stringify(users), (err) => {
+                            if (err) throw new Error();
+                            res.status(201).json(user);
+                        });
+                    });
+                } else {
+                    res.status(406).json({message: "Email is not valid"});
+                }
+            } else {
+                res.status(406).json({message: "Age is less than 0"});
             }
-        )
+        } else {
+            res.status(406).json({message: "Username is not valid"});
+        }
+    } else {
+        res.status(406).json({message: "Name is not valid"});
     }
 });
 
