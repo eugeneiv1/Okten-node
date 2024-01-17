@@ -13,6 +13,7 @@ class UserRepository {
   }
 
   public async test() {
+    console.log("test");
     return await User.find({});
   }
 }

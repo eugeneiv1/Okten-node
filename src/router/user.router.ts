@@ -9,9 +9,9 @@ router.get("", userController.getAll);
 
 router.get("/:id", commonMiddleware.isIdValid, userController.getById);
 
-router.post("", commonMiddleware.isUserDataValid, userController.addUser);
+router.get("/test", userController.test);
 
-router.get("test", userController.test);
+router.post("", commonMiddleware.isUserDataValid, userController.addUser);
 
 router.delete("/:id", commonMiddleware.isIdValid, userController.deleteUser);
 
