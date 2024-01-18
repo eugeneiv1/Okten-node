@@ -7,11 +7,9 @@ const router = Router();
 
 router.get("", userController.getAll);
 
+router.post("", userController.addUser);
+
 router.get("/:id", commonMiddleware.isIdValid, userController.getById);
-
-router.get("/test", userController.test);
-
-router.post("", commonMiddleware.isUserDataValid, userController.addUser);
 
 router.delete("/:id", commonMiddleware.isIdValid, userController.deleteUser);
 

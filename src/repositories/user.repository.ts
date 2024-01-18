@@ -12,9 +12,16 @@ class UserRepository {
     await write(users);
   }
 
-  public async test() {
-    console.log("test");
-    return await User.find({});
+  public async create(body: Partial<IUser>): Promise<IUser> {
+    return await User.create(body);
+  }
+
+  public async deleteById(id: string): Promise<void> {
+    await User.deleteOne({ _id: id });
+  }
+
+  public async getById(id: string): Promise<IUser> {
+    return await User.findOne({ _id: id });
   }
 }
 
